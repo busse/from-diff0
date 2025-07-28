@@ -1,0 +1,110 @@
+---
+layout: default
+---
+
+<div class="row">
+    <div class="col-lg-8 mx-auto">
+        <!-- Note Header -->
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <div>
+                <h1 class="mb-1">{{ page.title }}</h1>
+                {% if page.date %}
+                    <small class="text-muted">{{ page.date | date: "%B %d, %Y" }}</small>
+                {% endif %}
+            </div>
+            <a href="{{ '/notes/' | relative_url }}" class="btn btn-outline-secondary btn-sm">← All Notes</a>
+        </div>
+
+        <!-- Tags and Categories -->
+        {% if page.tags or page.categories %}
+            <div class="mb-4">
+                {% if page.categories %}
+                    {% for category in page.categories %}
+                        <span class="badge bg-primary me-1">{{ category }}</span>
+                    {% endfor %}
+                {% endif %}
+                {% if page.tags %}
+                    {% for tag in page.tags %}
+                        <span class="badge bg-secondary me-1"># {{ tag }}</span>
+                    {% endfor %}
+                {% endif %}
+            </div>
+        {% endif %}
+
+        <!-- Note Content -->
+        <div class="note-content">
+            {{ content }}
+        </div>
+
+        <!-- Backlinks -->
+        <div class="mt-5 pt-4 border-top">
+            <h5>Connected Notes</h5>
+            {% assign backlinks = site.notes | where_exp: "note", "note.content contains page.url" %}
+            {% if backlinks.size > 0 %}
+                <div class="list-group list-group-flush">
+                    {% for note in backlinks %}
+                        {% unless note.url == page.url %}
+                            <a href="{{ note.url | relative_url }}" class="list-group-item list-group-item-action">
+                                <div class="d-flex w-100 justify-content-between">
+                                    <h6 class="mb-1">{{ note.title }}</h6>
+                                    {% if note.date %}
+                                        <small>{{ note.date | date: "%b %d" }}</small>
+                                    {% endif %}
+                                </div>
+                                {% if note.tags %}
+                                    <small class="text-muted">
+                                        {% for tag in note.tags limit:3 %}
+                                            #{{ tag }}{% unless forloop.last %} {% endunless %}
+                                        {% endfor %}
+                                    </small>
+                                {% endif %}
+                            </a>
+                        {% endunless %}
+                    {% endfor %}
+                </div>
+            {% else %}
+                <p class="text-muted">No connected notes found.</p>
+            {% endif %}
+        </div>
+
+        <!-- Navigation -->
+        <div class="mt-4 pt-4 border-top">
+            <div class="row">
+                <div class="col-6">
+                    {% assign prev_note = site.notes | sort: 'date' | where_exp: "note", "note.date < page.date" | last %}
+                    {% if prev_note %}
+                        <a href="{{ prev_note.url | relative_url }}" class="btn btn-outline-primary">← {{ prev_note.title | truncate: 30 }}</a>
+                    {% endif %}
+                </div>
+                <div class="col-6 text-end">
+                    {% assign next_note = site.notes | sort: 'date' | where_exp: "note", "note.date > page.date" | first %}
+                    {% if next_note %}
+                        <a href="{{ next_note.url | relative_url }}" class="btn btn-outline-primary">{{ next_note.title | truncate: 30 }} →</a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Custom styles for notes -->
+<style>
+    .note-content h1, .note-content h2, .note-content h3 {
+        margin-top: 2rem;
+        margin-bottom: 1rem;
+    }
+    .note-content h1:first-child, .note-content h2:first-child, .note-content h3:first-child {
+        margin-top: 0;
+    }
+    .note-content blockquote {
+        border-left: 4px solid #007bff;
+        padding-left: 1rem;
+        margin: 1.5rem 0;
+        color: #6c757d;
+    }
+    .note-content code {
+        background-color: #f8f9fa;
+        padding: 0.2rem 0.4rem;
+        border-radius: 0.25rem;
+    }
+</style>

@@ -14,6 +14,21 @@ plugins:
 # GitHub Pages compatibility
 github: [metadata]
 
+# Collections
+collections:
+  notes:
+    output: true
+    permalink: /notes/:name/
+    sort_by: date
+
+# Defaults
+defaults:
+  - scope:
+      path: ""
+      type: "notes"
+    values:
+      layout: "note"
+
 # Exclude from processing
 exclude:
   - Gemfile
