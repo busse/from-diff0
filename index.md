@@ -35,8 +35,9 @@ title: Home
                 <div class="col-md-4 mb-3">
                     <div class="card h-100">
                         <div class="card-body">
-                            <h5 class="card-title">GitHub Pages</h5>
-                            <p class="card-text">Hosted on GitHub Pages for free, automatic deployment from your repository.</p>
+                            <h5 class="card-title">Zettelkasten Notes</h5>
+                            <p class="card-text">A collection of interconnected notes following the Zettelkasten method for knowledge management.</p>
+                            <a href="{{ "/notes/" | relative_url }}" class="btn btn-primary">Browse Notes</a>
                         </div>
                     </div>
                 </div>
